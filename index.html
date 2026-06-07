@@ -14,40 +14,49 @@
 
     body {
       min-height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      margin: 0;
       background: radial-gradient(circle at top left, #ff4b6b 0, #050816 45%, #0c1631 100%);
       color: #ffffff;
     }
 
+    /* Layout: image on the right, form on the left */
+    .page {
+      min-height: 100vh;
+      display: flex;
+      align-items: stretch;
+      justify-content: center;
+    }
+
+    /* Right-side image panel */
     .bg-wrapper {
-      position: fixed;
-      inset: 0;
+      flex: 1 1 auto;
+      position: relative;
       overflow: hidden;
-      z-index: -1;
-      filter: blur(2px) brightness(0.6);
+      border-radius: 24px 0 0 24px;
     }
 
     .bg-wrapper img {
-      width: 115%;
-      max-width: none;
-      height: 115%;
-      object-fit: cover;
-      transform: translate(-5%, -5%);
+      width: 100%;
+      height: 100%;
+      object-fit: contain;      /* show full image */
+      object-position: center;
+      filter: brightness(0.95);
     }
 
+    /* Left-side form panel */
     .container {
-      position: relative;
-      width: 95%;
-      max-width: 480px;
-      background: rgba(5, 8, 22, 0.85);
-      border-radius: 20px;
+      flex: 0 0 420px;
+      max-width: 100%;
+      background: rgba(5, 8, 22, 0.9);
+      border-radius: 0 24px 24px 0;
       padding: 24px 24px 28px;
       box-shadow:
         0 20px 40px rgba(0, 0, 0, 0.6),
         0 0 0 1px rgba(255, 255, 255, 0.06);
       backdrop-filter: blur(14px);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
     }
 
     .badge {
@@ -174,10 +183,21 @@
       color: #f97373;
     }
 
-    @media (max-width: 480px) {
+    @media (max-width: 768px) {
+      .page {
+        flex-direction: column;
+      }
+
+      .bg-wrapper {
+        order: 1;
+        height: 260px;
+        border-radius: 0 0 24px 24px;
+      }
+
       .container {
+        order: 2;
+        border-radius: 0;
         padding: 18px 16px 22px;
-        border-radius: 16px;
       }
 
       h1 {
@@ -187,46 +207,49 @@
   </style>
 </head>
 <body>
-  <!-- Blurred image background -->
-  <div class="bg-wrapper">
-    <img src="MiltonMaverics2026.png" alt="MiltonMavericks2026 Background" />
-  </div>
-
-  <div class="container">
-    <div class="badge">
-      <div class="badge-dot"></div>
-      <span>Milton Mavericks Boys Camping 2026</span>
+  <div class="page">
+    <!-- Image side -->
+    <div class="bg-wrapper">
+      <img src="MiltonMaverics2026.png" alt="MiltonMavericks2026 Background" />
     </div>
 
-    <h1>Member Details</h1>
-    <p class="subtitle">
-      Add your details to join the Milton Mavericks Boys Camping 2026.
-    </p>
-
-    <form id="mavericks-form">
-      <div>
-        <label for="fullName">Full Name *</label>
-        <input id="fullName" name="fullName" type="text" required placeholder="Your full name" />
+    <!-- Form side -->
+    <div class="container">
+      <div class="badge">
+        <div class="badge-dot"></div>
+        <span>Milton Mavericks Boys Camping 2026</span>
       </div>
 
-      <div>
-        <label for="contactNumber">Contact Number *</label>
-        <input id="contactNumber" name="contactNumber" type="tel" required placeholder="+1 416 555 1234" />
-        <p class="hint">Include country code if you are outside Canada.</p>
-      </div>
-
-      <button type="submit">Submit</button>
-
-      <div id="status" class="status"></div>
-
-      <p class="footer">
-        Submissions are stored securely in a private Google Sheet owned by the organizer.
+      <h1>Member Details</h1>
+      <p class="subtitle">
+        Add your details to join the Milton Mavericks Boys Camping 2026.
       </p>
-    </form>
+
+      <form id="mavericks-form">
+        <div>
+          <label for="fullName">Full Name *</label>
+          <input id="fullName" name="fullName" type="text" required placeholder="Your full name" />
+        </div>
+
+        <div>
+          <label for="contactNumber">Contact Number *</label>
+          <input id="contactNumber" name="contactNumber" type="tel" required placeholder="+1 416 555 1234" />
+          <p class="hint">Include country code if you are outside Canada.</p>
+        </div>
+
+        <button type="submit">Submit</button>
+
+        <div id="status" class="status"></div>
+
+        <p class="footer">
+          Submissions are stored securely in a private Google Sheet owned by the organizer.
+        </p>
+      </form>
+    </div>
   </div>
 
   <script>
-    const scriptURL = 'https://script.google.com/macros/s/AKfycbxy01E3NYcqlOFhWHFaxiHDn1fw9ekzLMJncvdVXKxDVK9H47hiLTgDNNsQFjSakp6C/exec'; // <-- paste your Apps Script Web App URL here
+    const scriptURL = 'https://script.google.com/macros/s/AKfycbxy01E3NYcqlOFhWHFaxiHDn1fw9ekzLMJncvdVXKxDVK9H47hiLTgDNNsQFjSakp6C/exec';
     const form = document.getElementById('mavericks-form');
     const statusDiv = document.getElementById('status');
 
