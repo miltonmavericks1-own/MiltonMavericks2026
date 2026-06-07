@@ -233,8 +233,17 @@
 
         <div>
           <label for="contactNumber">Contact Number *</label>
-          <input id="contactNumber" name="contactNumber" type="tel" required placeholder="+1 416 555 1234" />
-          <p class="hint">Contact Number must be reachable.</p>
+          <input
+            id="contactNumber"
+            name="contactNumber"
+            type="tel"
+            required
+            placeholder="+1 416 555 1234"
+            pattern=".*[0-9]{10}.*"
+          />
+          <p class="hint">
+            Include country code if you are outside Canada. Phone number must have exactly 10 digits (excluding country code).
+          </p>
         </div>
 
         <button type="submit">Submit</button>
@@ -255,6 +264,19 @@
 
     form.addEventListener('submit', function (e) {
       e.preventDefault();
+      statusDiv.textContent = '';
+      statusDiv.className = 'status';
+
+      const rawNumber = document.getElementById('contactNumber').value || '';
+      const digitsOnly = rawNumber.replace(/\D/g, '');
+
+      // Require exactly 10 digits (excluding country code)
+      if (digitsOnly.length !== 10) {
+        statusDiv.textContent = 'Contact number must have exactly 10 digits (excluding country code).';
+        statusDiv.className = 'status error';
+        return;
+      }
+
       statusDiv.textContent = 'Submitting...';
       statusDiv.className = 'status';
 
